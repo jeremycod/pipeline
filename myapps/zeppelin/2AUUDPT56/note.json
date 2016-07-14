@@ -2,14 +2,14 @@
   "paragraphs": [
     {
       "title": "Load Reference Data for Enrichment",
-      "text": "val itemsDF \u003d sqlContext.read.format(\"json\")\n  .load(\"file:/root/pipeline/myapps/html/advancedspark.com/json/software.json\")\n  .withColumnRenamed(\"id\", \"itemId\")\n  .as(\"items\")\n\nz.show(itemsDF.select($\"itemId\", $\"title\", $\"img\", $\"tags\").limit(10))",
-      "dateUpdated": "May 16, 2016 9:28:27 PM",
+      "text": "val itemsDF \u003d sqlContext.read.format(\"json\")\n  .load(\"file:/root/pipeline/myapps/html/advancedspark.com/json/actors.json\")\n  .withColumnRenamed(\"id\", \"itemId\")\n  .as(\"items\")\n\nz.show(itemsDF.select($\"itemId\", $\"title\", $\"img\", $\"tags\", $\"description\").limit(30))",
+      "dateUpdated": "Jul 10, 2016 8:35:35 PM",
       "config": {
         "colWidth": 12.0,
         "graph": {
           "mode": "table",
-          "height": 180.0,
-          "optionOpen": true,
+          "height": 523.0,
+          "optionOpen": false,
           "keys": [
             {
               "name": "itemId",
@@ -47,28 +47,51 @@
       "result": {
         "code": "SUCCESS",
         "type": "TABLE",
-        "msg": "itemId\ttitle\timg\ttags\n1\tApache Cassandra\timg/software/cassandra.png\tWrappedArray(Database, NoSQL, Java, Eventually Consistent, Transactional)\n2\tTachyon\timg/software/tachyon.png\tWrappedArray(Distributed Cache, Object Store, S3, Swift, HDFS)\n3\tApache Ambari\timg/software/ambari.png\tWrappedArray(Cluster Provision, Hadoop, Cluster Monitoring, REST API, Metrics, Alerts)\n4\tDocker\timg/software/docker.png\tWrappedArray(Container, Linux, DevOps, Deployment)\n5\tMicrosft Azure\timg/software/azure.png\tWrappedArray(Cloud Provider, Microsoft)\n6\tApache Flink\timg/software/flink.png\tWrappedArray(Data Processing, Java, Scala, SQL, DataFrame, Table, Streaming Analytics, Batch Analytics, Machine Learning, Graph Analytics, Approximations, Sampling)\n7\tApache Spark\timg/software/spark.png\tWrappedArray(Data Processing, Java, Scala, SQL, R, Python, DataFrame, Table, DataStream, Streaming Analytics, Batch Analytics, Machine Learning, Graph Analytics, Approximations, Sampling, Lazy)\n8\tApache Flume\timg/software/flume.png\tWrappedArray(Library, Java, Log Collection)\n9\tApache Giraph\timg/software/giraph.png\tWrappedArray(Library, Java, Graph Analytics, Batch)\n10\tApache HDFS\timg/software/hdfs.png\tWrappedArray(File System, Hadoop, Java)\n"
+        "msg": "itemId\ttitle\timg\ttags\tdescription\n90001\tLinda Blair\timg/actors/90001.jpg\tSt. Louis, Missouri, United States\tFrom the age of five, Linda Blair had to get used to the spotlight, first as a child model and then as an actress, when out of 600 applicants she was picked for the role of Regan, the possessed child, in The Exorcist. Linda quickly rose to international fame, won the Golden Globe, and seemed to be set to take the Academy Award for that role...\n90002\tShannon Whirry\timg/actors/90002.jpg\tGreen Lake, Wisconsin, United States\tShannon Whirry is not just a talented actress with girl-next-door looks, she captured a generation of viewers\u0027 imaginations by wishing that she actually was the girl-next-door. Born in Green Lake County, Wisconsin, Whirry graduated from high school and packed her bags for New York. She trained at the...\n90003\tRosalind Allen\timg/actors/90003.jpg\tWellington, New Zealand, New Zealand\tRosalind Allen (born Rosalind Ingledew) hails from New Zealand and studied acting there before coming to the United States. Her movie debut was in the film, Perfect, and she continues a long career in television \u0026 film. Famously remembered as the \"It girl\" in the Seinfeld episode, The Marine Biologist...\n90004\tBobbie Phillips\timg/actors/90004.jpg\tSalisbury, North Carolina, United States\tBrains and beauty are two words that have been repeatedly used to describe Bobbie Phillips throughout her career. Graduating high school at 16 years old, Bobbie tried several different career paths. After taking college classes to become a litigation attorney, it was suggested she also take drama classes...\n90005\tKeshia Knight Pulliam\timg/actors/90005.jpg\tNewark, New Jersey, United States\tKeshia Knight Pulliam was born on April 9, 1979 in Newark, New Jersey, USA. She is an actress, known for The Cosby Show (1984), Madea Goes to Jail (2009) and Beauty Shop (2005).\n90006\tTatyana Ali\timg/actors/90006.jpg\tBrooklyn, New York, United States\tOn January 24, 1979, Tatyana Marisol Ali was born to Sonia, who was a nurse from Panama, and Sheriff Ali, a retired police officer from Trinidad. At the age of four she started singing and got a taste of fame when she begged her mother to take her to an audition for Sesame Street. She went on to perform in many productions in her native city...\n90007\tAngell Conwell\timg/actors/90007.jpg\tOrangeburg, South Carolina, United States\tBorn in the tiny town of Orangeburg, South Carolina, Angell Conwell began her journey at a very young age. After winning countless pageants locally, she signed with Wilhelmina\u0027s Kids Division in New York at the age of 10. Angell enjoyed modeling but yearned for more of a challenge. She begged for her parents permission to audition for a role in August Wilson\u0027s highly acclaimed...\n90008\tShannah Laumeister\timg/actors/90008.jpg\tSan Francisco, California, United States\tShannah Laumeister was born on July 23, 1969 in San Francisco, California, USA. She is an actress and director, known for Bullets Over Broadway (1994), Nobody\u0027s Fool (1994) and 61* (2001). She was previously married to Bert Stern.\n90009\tPam Grier\timg/actors/90009.jpg\tWinstom-Salem, North Carolina, United States\tPam Grier was born in Winston-Salem, NC, one of four children of Gwendolyn Sylvia (Samuels), a nurse, and Clarence Ransom Grier Jr., an Air Force mechanic. Pam has been a major African-American star from the early 1970s. Her career started in 1971, when Roger Corman of New World Pictures launched her with The Big Doll House...\n90010\tTiffani Thiessen\timg/actors/90010.jpg\tLong Beach, California, United States\tTiffani-Amber Thiessen was born on January 23, 1974, in Long Beach, California, USA, to Frank Thiessen, a park designer, and Robyn Ernest, a homemaker. She grew up in Long Beach with her parents and her brothers, professional cyclist Todd (b. 1968) and Schuyler (b. 1977). When Tiffani was 8, her uncle...\n90011\tAshley Judd\timg/actors/90011.jpg\tGranada Hills, California, United States\tAshley Judd was born on April 19, 1968 in Granada Hills, California, USA as Ashley Tyler Ciminella. She is an actress and producer, known for Divergent (2014), Heat (1995) and Double Jeopardy (1999). She was previously married to Dario Franchitti.\n90012\tStacey Dash\timg/actors/90012.jpg\tBronx, New York, United States\tStacey Dash was born in the Bronx, New York. Stacy knew that she wanted to act, and from an early age began to act professionally. She made regular appearances on The Cosby Show, The Fresh Prince of Bel-Air, and also St. Elsewhere. At 21 she made her feature film debut in Enemy Territory, which was quickly followed by Moving...\n90013\tSofia Vergara\timg/actors/90013.jpg\tBarranquilla, Atlantico, Colombia\tSofia Margarita Vergara Vergara was born and raised in Barranquilla, Colombia. Her mother, Margarita Vergara Davila de Vergara, is a housewife. Her father, Julio Enrique Vergara Robayo, provides cattle to the meat industry. She has five siblings. She was educated at a private bilingual Spanish/English school...\n90014\tGail O\u0027Grady\timg/actors/90014.jpg\tDetroit, Michigan, United States\tGail O\u0027Grady was born on January 23, 1963 in Detroit, Michigan, USA as Gail Ann O\u0027Grady. She is an actress and producer, known for American Dreams (2002), Deuce Bigalow: Male Gigolo (1999) and NYPD Blue (1993). She was previously married to John Stamatakis, Anthony J Pellegrino, Steve Fenton, Severin Wunderman, Jeffrey Byron and Richard Dasko.\n90015\tBarbara Niven\timg/actors/90015.jpg\tPortland, Oregon, United States\tBarbara Niven was born on February 26, 1953 in Portland, Oregon, USA as Barbara Lee Bucholz. She is an actress and producer, known for A Perfect Ending (2012), Pensacola: Wings of Gold (1997) and The Rat Pack (1998).\n10001\tLeonardo DiCaprio\timg/actors/10001.jpg\tHollywood, California, United States\tFew actors in the world have had a career quite as diverse as Leonardo DiCaprio\u0027s. DiCaprio has gone from relatively humble beginnings, as a supporting cast member of the sitcom Growing Pains and low budget horror movies, such as Critters 3, to a major teenage heartthrob in the 1990s, as the hunky lead actor in movies such as Romeo + Juliet and Titanic...\n10002\tAnthony Hopkins\timg/actors/10002.jpg\tPort Talbot, Glamorgan, Wales\tAnthony Hopkins was born on December 31, 1937, in Margam, Wales, to Muriel Anne (Yeats) and Richard Arthur Hopkins, a baker. His parents were both of half Welsh and half English descent. Influenced by Richard Burton, he decided to study at College of Music and Drama and graduated in 1957. In 1965, he moved to London and joined the National Theatre...\n10003\tAl Pacino\timg/actors/10003.jpg\tManhattan, New York, United States\tOne of the greatest actors in all of film history, Al Pacino established himself during one of film\u0027s greatest decades, the 1970s, and has become an enduring and iconic figure in the world of American movies. Pacino was born on April 25, 1940, in the Bronx, New York, to an Italian-American family. His parents...\n10004\tMorgan Freeman\timg/actors/10004.jpg\tMemphis, Tennessee, United States\tWith an authoritative voice and calm demeanor, this ever popular American actor has grown into one of the most respected figures in modern US cinema. Morgan was born in June 1937 in Memphis, Tennessee, to Mayme Edna (Revere), a teacher, and Morgan Porterfield Freeman, a barber. The young Freeman attended...\n10005\tJames Gandolfini\timg/actors/10005.jpg\tWestwood, New Jersey, United States\tJames Gandolfini was born in Westwood, New Jersey, to Santa (Penna), a high school lunchlady, and James Joseph Gandolfini, Sr., a bricklayer and head school janitor. His parents were both of Italian origin. Gandolfini began acting in the New York theater. His Broadway debut was in the 1992 revival of \"A Streetcar Named Desire\" with Jessica Lange and Alec Baldwin...\n10006\tTom Cruise\timg/actors/10006.jpg\tSyracuse, New York, United States\tIf you had told fourteen-year-old Franciscan seminary student Thomas Cruise Mapother IV that one day in the not-too-distant future he would be considered one of the top hundred movie stars of all time, he would have probably grinned and told you that his ambition was to become a priest. None the less, this sensitive, deeply religious youngster who...\n10007\tDenzel Washington\timg/actors/10007.jpg\tMount Vernon, New York, United States\tDenzel Hayes Washington, Jr. was born on December 28, 1954 in Mount Vernon, New York. He is the middle of three children of a beautician mother, Lennis (Lowe), from Georgia, and a Pentecostal minister father, Denzel Washington, Sr., from Virginia. After graduating from high school, Denzel enrolled at Fordham University...\n10008\tRobert De Niro\timg/actors/10008.jpg\tManhattan, New York, United States\tRobert De Niro, thought of as one of the greatest American actors of all time, was born in New York City, to artists Virginia (Admiral) and Robert De Niro Sr. His paternal grandfather was of Italian descent, and his other ancestry is Irish, Dutch, English, French, and German. He was trained at the Stella Adler Conservatory and the American Workshop...\n10009\tChazz Palminteri\timg/actors/10009.jpg\tBronx, New York, United States\tBronx-born and raised Chazz Palminteri was a natural choice to continue the Italianate torch in film. In the tradition set forth in the 1970s by such icons as director Martin Scorsese and actors Robert De Niro, Al Pacino, John Cazale and Joe Pesci, Palminteri has brought grit, muscle and an evocative realism to the sidewalks of his New York neighborhood...\n10010\tTom Hanks\timg/actors/10010.jpg\tConcord, California, United States\tThomas Jeffrey Hanks was born in Concord, California, to Janet Marylyn (Frager), a hospital worker, and Amos Mefford Hanks, an itinerant cook. His father had English, and some German, ancestry, while his mother\u0027s family, originally surnamed \"Fraga\", was entirely Portuguese. Tom grew up in what he has called a \"fractured\" family...\n10011\tJohn Travolta\timg/actors/10011.jpg\tEnglewood, New York, United States\tJohn Travolta was born in Englewood, New Jersey, one of six children of Helen Travolta Helen Cecilia Burke) and Salvatore Travolta. His father was of Italian descent and his mother was of Irish ancestry. His father owned a tire repair shop called Travolta Tires in Hillsdale, NJ. Travolta appeared in a local production of \"Who\u0027ll Save the Plowboy?\"...\n10012\tJohnny Depp\timg/actors/10012.jpg\tOwensboro, Kentucky, United States\tJohnny Depp is perhaps one of the most versatile actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. Depp was raised in Florida. He dropped out of school when he was 15...\n10013\tMark Wahlberg\timg/actors/10013.jpg\tBoston, Massachusetts, United States\tAmerican actor Mark Wahlberg is one of a handful of respected entertainers who successfully made the transition from teen pop idol to respected actor. A Best Supporting Actor Oscar nominee for The Departed who went on to receive positive critical reviews for his performance in The Fighter, Wahlberg also is a solid comedy actor, proven by his starring role in Ted...\n10014\tJames Franco\timg/actors/10014.jpg\tPalo Alto, California, United States\tKnown for his breakthrough starring role on Freaks and Geeks, James Franco was born in Palo Alto, California on April 19, 1978. His mother, Betsy Franco, is Jewish, and his father, Douglas Eugene \"Doug\" Franco, was of Portuguese and Swedish descent, and ran a Silicon Valley business. James\u0027s mother, a writer, has occasionally acted...\n10015\tClive Owen\timg/actors/10015.jpg\tCoventry, Warwickshire, England\tDarkly handsome British actor Clive Owen is one of a handful of stars best known for his art house films but how has handle more mainstream action films lately with equal measures of grace and skill. Owen typically is cast as characters whose primary traits are a balance of physical strength, intellect...\n"
       },
       "dateCreated": "Nov 24, 2015 6:17:56 PM",
-      "dateStarted": "May 16, 2016 9:28:27 PM",
-      "dateFinished": "May 16, 2016 9:28:28 PM",
+      "dateStarted": "Jul 10, 2016 8:35:35 PM",
+      "dateFinished": "Jul 10, 2016 8:35:37 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "title": "Get Live Ratings from Cassandra",
       "text": "val cassandraConfig \u003d Map(\"keyspace\" -\u003e \"advancedspark\", \"table\" -\u003e \"item_ratings\")\n\nval itemRatingsDF \u003d sqlContext.read.format(\"org.apache.spark.sql.cassandra\")\n  .options(cassandraConfig)\n  .load()\n  .select($\"userid\", $\"itemid\", $\"rating\", $\"timestamp\")\n  .withColumnRenamed(\"userid\", \"userId\")\n  .withColumnRenamed(\"itemid\", \"itemId\")\n  .as(\"itemRatings\")\n\nz.show(itemRatingsDF)",
-      "dateUpdated": "May 16, 2016 9:28:27 PM",
+      "dateUpdated": "Jul 10, 2016 8:35:35 PM",
       "config": {
         "colWidth": 12.0,
         "graph": {
           "mode": "table",
           "height": 129.0,
           "optionOpen": false,
-          "keys": [],
-          "values": [],
+          "keys": [
+            {
+              "name": "userId",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          ],
+          "values": [
+            {
+              "name": "itemId",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          ],
           "groups": [],
-          "scatter": {}
+          "scatter": {
+            "xAxis": {
+              "name": "userId",
+              "index": 0.0,
+              "aggr": "sum"
+            },
+            "yAxis": {
+              "name": "itemId",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          }
         },
         "title": true,
         "tableHide": false,
@@ -85,18 +108,18 @@
       "result": {
         "code": "SUCCESS",
         "type": "TABLE",
-        "msg": "userId\titemId\trating\ttimestamp\n49360\t5\t1\t1460676654000\n49360\t7\t1\t1460676582000\n49360\t42\t1\t1460676574000\n49360\t47\t1\t1460676664000\n49360\t54\t1\t1460676620000\n49360\t70\t1\t1460676646000\n53734\t12\t1\t1460752840000\n53734\t63\t1\t1460752842000\n53734\t79\t1\t1460752870000\n96576\t4\t1\t1463434052000\n96576\t18\t1\t1463434060000\n96576\t41\t1\t1463434096000\n96576\t42\t1\t1463434078000\n96576\t81\t1\t1463434068000\n34063\t21\t1\t1460676560000\n34063\t24\t1\t1460676562000\n34063\t29\t1\t1460676566000\n34063\t35\t1\t1460676568000\n34063\t36\t1\t1460676570000\n34063\t37\t1\t1460676572000\n34063\t41\t1\t1460676576000\n34063\t44\t1\t1460676580000\n34063\t49\t1\t1460676594000\n34063\t50\t1\t1460676578000\n34063\t52\t1\t1460676592000\n34063\t54\t1\t1460676582000\n34063\t74\t1\t1460676608000\n34063\t77\t1\t1460676624000\n99839\t7\t1\t1460676556000\n99839\t10\t1\t1460676552000\n99839\t11\t1\t1460676554000\n99839\t18\t1\t1460676558000\n99839\t31\t1\t1460676604000\n99839\t69\t1\t1460676564000\n99839\t77\t1\t1460676568000\n47604\t18\t1\t1463433716000\n47604\t40\t1\t1463433720000\n29427\t1\t1\t1460676622000\n29427\t18\t1\t1460676600000\n29427\t21\t1\t1460676602000\n29427\t42\t1\t1460676680000\n29427\t51\t1\t1460676628000\n29427\t52\t1\t1460676958000\n42884\t42\t1\t1463434058000\n42884\t49\t1\t1463434024000\n42884\t75\t1\t1463434032000\n42884\t77\t1\t1463434034000\n6437\t27\t1\t1460676664000\n6437\t33\t1\t1460676670000\n6437\t42\t1\t1460676672000\n6437\t61\t1\t1460676678000\n6437\t65\t1\t1460676920000\n6437\t69\t1\t1460676686000\n45907\t10\t1\t1463434022000\n45907\t14\t1\t1463434026000\n45907\t28\t1\t1463434024000\n45907\t38\t1\t1463434062000\n45907\t75\t1\t1463434036000\n86868\t7\t1\t1460676718000\n86868\t20\t1\t1460676872000\n86868\t59\t1\t1460676694000\n86868\t62\t1\t1460676868000\n86868\t63\t1\t1460676868000\n86868\t70\t1\t1460676876000\n72157\t1\t1\t1463434024000\n72157\t4\t1\t1463434064000\n72157\t11\t1\t1463434030000\n72157\t42\t1\t1463434040000\n72157\t51\t1\t1463434040000\n72157\t61\t1\t1463434038000\n12622\t7\t1\t1463434018000\n12622\t18\t1\t1463434020000\n12622\t28\t1\t1463434026000\n12622\t51\t1\t1463434024000\n12622\t62\t1\t1463434034000\n9474\t31\t1\t1463434044000\n9474\t37\t1\t1463434050000\n9474\t49\t1\t1463434104000\n9474\t51\t1\t1463434020000\n9474\t60\t1\t1463434032000\n9474\t72\t1\t1463434078000\n9474\t77\t1\t1463434026000\n96971\t1\t1\t1460763032000\n96971\t7\t1\t1460763036000\n96971\t18\t1\t1460763038000\n96971\t20\t1\t1460763040000\n96971\t44\t1\t1460763046000\n78352\t37\t1\t1463434074000\n78352\t42\t1\t1463434038000\n78352\t44\t1\t1463434072000\n78352\t49\t1\t1463434044000\n78352\t52\t1\t1463434068000\n78352\t73\t1\t1463434052000\n78352\t77\t1\t1463434058000\n56348\t39\t1\t1460676624000\n56348\t40\t1\t1460676630000\n56348\t44\t1\t1460676642000\n56348\t49\t1\t1460676656000\n56348\t52\t1\t1460676624000\n56348\t64\t1\t1460676678000\n56348\t77\t1\t1460676676000\n37477\t38\t1\t1460677094000\n37022\t7\t1\t1460676692000\n37022\t20\t1\t1460676656000\n37022\t24\t1\t1460676788000\n37022\t28\t1\t1460676626000\n37022\t33\t1\t1460677644000\n37022\t42\t1\t1460676650000\n37022\t43\t1\t1460676648000\n37022\t69\t1\t1460676668000\n37022\t76\t1\t1460676670000\n67804\t28\t1\t1463434106000\n67804\t62\t1\t1463434102000\n25639\t2\t1\t1460676656000\n25639\t7\t1\t1460676662000\n25639\t9\t1\t1460676154000\n25639\t14\t1\t1460676318000\n25639\t15\t1\t1460676686000\n25639\t17\t1\t1460676686000\n25639\t18\t1\t1460676664000\n25639\t33\t1\t1460676448000\n25639\t45\t1\t1460676084000\n25639\t60\t1\t1460676132000\n25639\t61\t1\t1460676834000\n96340\t7\t1\t1460676578000\n96340\t8\t1\t1460676610000\n96340\t10\t1\t1460676586000\n96340\t11\t1\t1460676586000\n96340\t12\t1\t1460676560000\n96340\t13\t1\t1460676562000\n96340\t14\t1\t1460676564000\n96340\t16\t1\t1460676576000\n96340\t17\t1\t1460676582000\n96340\t18\t1\t1460676580000\n96340\t20\t1\t1460676584000\n96340\t27\t1\t1460676576000\n96340\t32\t1\t1460676588000\n96340\t33\t1\t1460676588000\n96340\t42\t1\t1460676612000\n96340\t47\t1\t1460676566000\n96340\t49\t1\t1460676574000\n96340\t52\t1\t1460676614000\n96340\t53\t1\t1460676614000\n96340\t60\t1\t1460676660000\n96340\t61\t1\t1460676574000\n96340\t62\t1\t1460676572000\n96340\t63\t1\t1460676572000\n96340\t64\t1\t1460676616000\n8910\t1\t1\t1460670952000\n8910\t7\t1\t1460670964000\n8910\t9\t1\t1460670952000\n8910\t10\t1\t1460670952000\n8910\t14\t1\t1460670954000\n8910\t15\t1\t1460670954000\n8910\t16\t1\t1460670952000\n27569\t1\t1\t1460677316000\n27569\t2\t1\t1460677318000\n27569\t21\t1\t1460676674000\n27569\t28\t1\t1460676678000\n27569\t37\t1\t1460676680000\n27569\t40\t1\t1460676682000\n27569\t44\t1\t1460676686000\n27569\t62\t1\t1460676690000\n37544\t4\t1\t1463434032000\n37544\t18\t1\t1463434040000\n37544\t42\t1\t1463434052000\n37544\t49\t1\t1463434080000\n37544\t50\t1\t1463434080000\n37544\t52\t1\t1463434056000\n17841\t9\t1\t1460676606000\n17841\t11\t1\t1460676606000\n17841\t12\t1\t1460676608000\n17841\t14\t1\t1460676610000\n17841\t39\t1\t1460676620000\n17841\t40\t1\t1460676622000\n17841\t42\t1\t1460676624000\n17841\t44\t1\t1460676624000\n17841\t63\t1\t1460676632000\n27045\t1\t1\t1460676672000\n27045\t7\t1\t1460676668000\n27045\t18\t1\t1460676678000\n27045\t20\t1\t1460676680000\n27045\t42\t1\t1460676686000\n27045\t60\t1\t1460676874000\n27045\t62\t1\t1460676862000\n27045\t63\t1\t1460676862000\n27045\t70\t1\t1460676858000\n27045\t79\t1\t1460676884000\n5342\t25\t1\t1460676660000\n5342\t33\t1\t1460676658000\n5342\t34\t1\t1460676658000\n5342\t40\t1\t1460676662000\n5342\t50\t1\t1460676656000\n5342\t62\t1\t1460676652000\n5342\t63\t1\t1460676652000\n5342\t66\t1\t1460676652000\n5342\t67\t1\t1460676650000\n5342\t72\t1\t1460676650000\n73744\t7\t1\t1460675948000\n73744\t18\t1\t1460675942000\n73744\t28\t1\t1460675922000\n73744\t34\t1\t1460675910000\n73744\t68\t1\t1460675930000\n17974\t1\t1\t1463434010000\n17974\t4\t1\t1463434000000\n17974\t10\t1\t1463434004000\n17974\t12\t1\t1463434004000\n17974\t18\t1\t1463434014000\n17974\t31\t1\t1463434026000\n17974\t49\t1\t1463434032000\n17974\t68\t1\t1463434046000\n23426\t11\t1\t1460676766000\n23426\t18\t1\t1460676770000\n23426\t42\t1\t1460676740000\n23426\t63\t1\t1460676814000\n23426\t69\t1\t1460676812000\n23426\t70\t1\t1460676754000\n3969\t3\t1\t1460676594000\n3969\t7\t1\t1460676596000\n3969\t8\t1\t1460676598000\n3969\t10\t1\t1460676598000\n3969\t11\t1\t1460676598000\n3969\t12\t1\t1460676600000\n3969\t14\t1\t1460676602000\n3969\t15\t1\t1460676600000\n3969\t18\t1\t1460676602000\n3969\t25\t1\t1460676604000\n3969\t28\t1\t1460676606000\n3969\t29\t1\t1460676608000\n3969\t34\t1\t1460676652000\n3969\t38\t1\t1460676610000\n3969\t41\t1\t1460676612000\n3969\t42\t1\t1460676612000\n3969\t51\t1\t1460676614000\n3969\t52\t1\t1460676614000\n3969\t54\t1\t1460676614000\n3969\t61\t1\t1460676618000\n3969\t62\t1\t1460676618000\n3969\t63\t1\t1460676618000\n75293\t7\t1\t1463434024000\n75293\t21\t1\t1463434082000\n75293\t42\t1\t1463434038000\n75293\t51\t1\t1463434042000\n75293\t52\t1\t1463434076000\n75293\t61\t1\t1463434058000\n57048\t7\t1\t1463434012000\n57048\t10\t1\t1463434078000\n57048\t18\t1\t1463434014000\n57048\t24\t1\t1463434034000\n57048\t42\t1\t1463434018000\n80675\t6\t1\t1460726666000\n80675\t7\t1\t1460726668000\n27\t4\t1\t1463434052000\n27\t10\t1\t1463434048000\n27\t13\t1\t1463434070000\n27\t14\t1\t1463434070000\n27\t16\t1\t1463434040000\n27\t36\t1\t1463434054000\n27\t37\t1\t1463434052000\n27\t47\t1\t1463434064000\n28567\t7\t1\t1460676602000\n28567\t11\t1\t1460676616000\n28567\t35\t1\t1460676612000\n28567\t61\t1\t1460676628000\n28567\t74\t1\t1460676642000\n28567\t78\t1\t1460676676000\n83907\t1\t1\t1463434034000\n83907\t7\t1\t1463434038000\n83907\t18\t1\t1463434042000\n83907\t21\t1\t1463434068000\n83907\t42\t1\t1463434044000\n83907\t49\t1\t1463434052000\n89711\t29\t1\t1463434092000\n84351\t4\t1\t1463434038000\n84351\t7\t1\t1463434066000\n84351\t42\t1\t1463434080000\n84351\t43\t1\t1463434100000\n84351\t59\t1\t1463434048000\n84351\t63\t1\t1463434094000\n84351\t74\t1\t1463434070000\n82510\t7\t1\t1460676618000\n82510\t21\t1\t1460676588000\n82510\t52\t1\t1460676644000\n82510\t53\t1\t1460676646000\n82510\t54\t1\t1460676642000\n82510\t62\t1\t1460676626000\n82510\t63\t1\t1460676626000\n82510\t69\t1\t1460676628000\n82510\t74\t1\t1460676632000\n38942\t21\t1\t1463434068000\n38942\t31\t1\t1463434102000\n38942\t42\t1\t1463434026000\n38942\t44\t1\t1463434028000\n38942\t61\t1\t1463434046000\n68031\t3\t1\t1463434092000\n68031\t4\t1\t1463434090000\n68031\t7\t1\t1463434062000\n68031\t10\t1\t1463434054000\n68031\t11\t1\t1463434056000\n68031\t13\t1\t1463434058000\n68031\t18\t1\t1463434060000\n68031\t28\t1\t1463434098000\n68031\t52\t1\t1463434074000\n54801\t19\t1\t1460676616000\n54801\t29\t1\t1460676624000\n54801\t35\t1\t1460676788000\n54801\t36\t1\t1460676632000\n54801\t37\t1\t1460676634000\n54801\t40\t1\t1460676636000\n54801\t41\t1\t1460676638000\n54801\t64\t1\t1460676654000\n54801\t73\t1\t1460676662000\n54801\t75\t1\t1460676658000\n12663\t1\t1\t1460676716000\n12663\t7\t1\t1460676720000\n12663\t10\t1\t1460676724000\n12663\t11\t1\t1460676724000\n12663\t12\t1\t1460676718000\n12663\t13\t1\t1460676728000\n12663\t14\t1\t1460676726000\n12663\t15\t1\t1460676726000\n12663\t16\t1\t1460676730000\n12663\t17\t1\t1460676730000\n12663\t18\t1\t1460676730000\n12663\t24\t1\t1460676732000\n12663\t26\t1\t1460676736000\n12663\t28\t1\t1460676738000\n12663\t30\t1\t1460676740000\n12663\t32\t1\t1460676744000\n12663\t33\t1\t1460676742000\n12663\t38\t1\t1460676746000\n12663\t39\t1\t1460676746000\n12663\t42\t1\t1460676748000\n12663\t44\t1\t1460676750000\n12663\t49\t1\t1460676752000\n12663\t51\t1\t1460676754000\n12663\t54\t1\t1460676756000\n12663\t60\t1\t1460676766000\n12663\t61\t1\t1460676764000\n12663\t62\t1\t1460676760000\n12663\t63\t1\t1460676760000\n12663\t74\t1\t1460676776000\n12663\t79\t1\t1460676768000\n74715\t18\t1\t1460676688000\n74715\t52\t1\t1460676660000\n74715\t81\t1\t1460676656000\n12659\t1\t1\t1463434060000\n12659\t7\t1\t1463434040000\n12659\t18\t1\t1463434064000\n12659\t42\t1\t1463434056000\n12659\t49\t1\t1463434082000\n12659\t62\t1\t1463434066000\n29113\t7\t1\t1463434026000\n29113\t29\t1\t1463434074000\n29113\t42\t1\t1463434032000\n29113\t49\t1\t1463434034000\n29113\t75\t1\t1463434038000\n96872\t7\t1\t1463434034000\n96872\t18\t1\t1463434038000\n96872\t21\t1\t1463434040000\n96872\t35\t1\t1463434078000\n96872\t42\t1\t1463434084000\n96872\t44\t1\t1463434048000\n4747\t1\t1\t1463434062000\n4747\t7\t1\t1463434096000\n4747\t42\t1\t1463434070000\n4747\t49\t1\t1463434086000\n13338\t56\t1\t1460676660000\n49754\t1\t1\t1463434046000\n49754\t4\t1\t1463434050000\n49754\t7\t1\t1463434048000\n49754\t10\t1\t1463434052000\n49754\t13\t1\t1463434054000\n49754\t14\t1\t1463434054000\n49754\t49\t1\t1463434060000\n49754\t75\t1\t1463434066000\n88005\t6\t1\t1460845306000\n45777\t38\t1\t1460671896000\n45777\t45\t1\t1460671896000\n45777\t50\t1\t1460671896000\n45777\t51\t1\t1460671898000\n60978\t7\t1\t1460676622000\n60978\t36\t1\t1460676638000\n60978\t44\t1\t1460676642000\n60978\t62\t1\t1460676670000\n60978\t67\t1\t1460676648000\n60978\t78\t1\t1460676652000\n71544\t42\t1\t1463434034000\n71544\t62\t1\t1463434044000\n96339\t3\t1\t1463431988000\n96339\t4\t1\t1463431988000\n96339\t8\t1\t1463434054000\n96339\t9\t1\t1463431988000\n96339\t10\t1\t1463431986000\n96339\t16\t1\t1463434056000\n96339\t21\t1\t1463434054000\n96339\t27\t1\t1463434058000\n89362\t6\t1\t1463434046000\n89362\t10\t1\t1463434056000\n89362\t11\t1\t1463434056000\n89362\t18\t1\t1463434052000\n89362\t24\t1\t1463434060000\n89362\t28\t1\t1463434072000\n20229\t7\t1\t1460676668000\n20229\t18\t1\t1460676678000\n20229\t20\t1\t1460676766000\n20229\t24\t1\t1460676682000\n20229\t28\t1\t1460676684000\n20229\t40\t1\t1460676696000\n20229\t42\t1\t1460676688000\n20229\t49\t1\t1460676692000\n20229\t51\t1\t1460676692000\n20229\t62\t1\t1460676698000\n87482\t7\t1\t1463434014000\n87482\t21\t1\t1463434046000\n87482\t44\t1\t1463434022000\n87482\t63\t1\t1463434020000\n87482\t75\t1\t1463434026000\n2008\t3\t1\t1463425252000\n2008\t9\t1\t1463425252000\n2008\t10\t1\t1463425254000\n2008\t11\t1\t1463425254000\n2008\t15\t1\t1463425256000\n2008\t16\t1\t1463425256000\n2008\t17\t1\t1463425254000\n13077\t2\t1\t1460752818000\n13077\t3\t1\t1460752818000\n13077\t12\t1\t1460752816000\n13077\t13\t1\t1460752824000\n37902\t7\t1\t1460676602000\n37902\t10\t1\t1460676668000\n37902\t11\t1\t1460676874000\n37902\t12\t1\t1460676664000\n37902\t39\t1\t1460676614000\n37902\t42\t1\t1460676642000\n37902\t47\t1\t1460676612000\n"
+        "msg": "userId\titemId\trating\ttimestamp\n80374\t10001\t1.0\t1466051472000\n80374\t10006\t1.0\t1466051474000\n80374\t10007\t1.0\t1466051474000\n80374\t10012\t1.0\t1466051474000\n80374\t10013\t1.0\t1466051476000\n80374\t90003\t1.0\t1466051470000\n80374\t90004\t1.0\t1466051470000\n80374\t90009\t1.0\t1466051472000\n80374\t90010\t1.0\t1466051472000\n80374\t90015\t1.0\t1466051472000\n28024\t10001\t1.0\t1466100176000\n28024\t10004\t1.0\t1466100192000\n28024\t10006\t1.0\t1466100188000\n28024\t90003\t1.0\t1466100194000\n28024\t90006\t1.0\t1466100196000\n28024\t90007\t1.0\t1466100196000\n85152\t10001\t1.0\t1466100088000\n85152\t10006\t1.0\t1466100074000\n85152\t10012\t1.0\t1466100090000\n85152\t90004\t1.0\t1466100116000\n85152\t90013\t1.0\t1466100116000\n85152\t90015\t1.0\t1466100114000\n27981\t10006\t1.0\t1465047836000\n27981\t10007\t1.0\t1465047836000\n27981\t10008\t1.0\t1465047836000\n27981\t90009\t1.0\t1465047834000\n27981\t90010\t1.0\t1465047834000\n27981\t90011\t1.0\t1465047834000\n89887\t10005\t1.0\t1466092202000\n89887\t10006\t1.0\t1466092202000\n89887\t10007\t1.0\t1466092202000\n89887\t90001\t1.0\t1466092202000\n89887\t90009\t1.0\t1466092200000\n89887\t90011\t1.0\t1466092200000\n72875\t10002\t1.0\t1466100050000\n72875\t10010\t1.0\t1466100058000\n72875\t10012\t1.0\t1466100056000\n72875\t90003\t1.0\t1466100094000\n72875\t90008\t1.0\t1466100084000\n72875\t90015\t1.0\t1466100090000\n52814\t10003\t1.0\t1468164770000\n52814\t10004\t1.0\t1468164770000\n52814\t10005\t1.0\t1468164772000\n52814\t90006\t1.0\t1468164770000\n52814\t90007\t1.0\t1468164772000\n52814\t90008\t1.0\t1468164772000\n43450\t10003\t1.0\t1468165410000\n43450\t10004\t1.0\t1468165412000\n43450\t10012\t1.0\t1468165410000\n43450\t10013\t1.0\t1468165412000\n43450\t90006\t1.0\t1468165410000\n43450\t90007\t1.0\t1468165412000\n97561\t10002\t1.0\t1468163030000\n97561\t10003\t1.0\t1468163026000\n97561\t10004\t1.0\t1468163026000\n97561\t10011\t1.0\t1468163030000\n97561\t10012\t1.0\t1468163028000\n97561\t10013\t1.0\t1468163028000\n97911\t10001\t1.0\t1466100194000\n97911\t10006\t1.0\t1466100192000\n97911\t10010\t1.0\t1466100194000\n97911\t90001\t1.0\t1466100198000\n97911\t90004\t1.0\t1466100196000\n97911\t90013\t1.0\t1466100188000\n97911\t90014\t1.0\t1466100188000\n46843\t10001\t1.0\t1466100134000\n46843\t10005\t1.0\t1466100180000\n46843\t10006\t1.0\t1466100180000\n46843\t10007\t1.0\t1466100180000\n46843\t10009\t1.0\t1466100188000\n46843\t10012\t1.0\t1466100234000\n46843\t10013\t1.0\t1466100236000\n46843\t10014\t1.0\t1466100236000\n46843\t90004\t1.0\t1466100176000\n46843\t90005\t1.0\t1466100178000\n66348\t10010\t1.0\t1466099670000\n66348\t10011\t1.0\t1466099672000\n66348\t10012\t1.0\t1466099672000\n66348\t90013\t1.0\t1466099668000\n66348\t90014\t1.0\t1466099670000\n66348\t90015\t1.0\t1466099670000\n36018\t10002\t1.0\t1468162780000\n36018\t10003\t1.0\t1468162778000\n36018\t10004\t1.0\t1468162782000\n36018\t10011\t1.0\t1468162782000\n36018\t10012\t1.0\t1468162778000\n36018\t10013\t1.0\t1468162782000\n36018\t90005\t1.0\t1468162780000\n36018\t90006\t1.0\t1468162778000\n36018\t90007\t1.0\t1468162784000\n21619\t10012\t1.0\t1465049318000\n21619\t10013\t1.0\t1465049318000\n21619\t10014\t1.0\t1465049318000\n21619\t90001\t1.0\t1465049312000\n21619\t90013\t1.0\t1465049314000\n21619\t90015\t1.0\t1465049314000\n58200\t10001\t1.0\t1468165784000\n58200\t10003\t1.0\t1468165756000\n58200\t10004\t1.0\t1468165758000\n58200\t10006\t1.0\t1468165786000\n58200\t10007\t1.0\t1468165814000\n58200\t10010\t1.0\t1468165784000\n58200\t10012\t1.0\t1468165756000\n58200\t10013\t1.0\t1468165758000\n58200\t10015\t1.0\t1468165786000\n58200\t90004\t1.0\t1468165784000\n58200\t90006\t1.0\t1468165756000\n58200\t90007\t1.0\t1468165758000\n58200\t90009\t1.0\t1468165786000\n5980\t10001\t1.0\t1466100186000\n5980\t10002\t1.0\t1466100186000\n5980\t10012\t1.0\t1466100190000\n5980\t90010\t1.0\t1466100182000\n5980\t90011\t1.0\t1466100210000\n5980\t90014\t1.0\t1466100222000\n39819\t10001\t1.0\t1466100060000\n39819\t10004\t1.0\t1466100070000\n39819\t10006\t1.0\t1466100054000\n39819\t10007\t1.0\t1466100056000\n39819\t10012\t1.0\t1466100092000\n39819\t90003\t1.0\t1466100534000\n39819\t90004\t1.0\t1466100536000\n39819\t90005\t1.0\t1466100536000\n39819\t90007\t1.0\t1466100180000\n39819\t90010\t1.0\t1466100174000\n39819\t90013\t1.0\t1466100066000\n39819\t90015\t1.0\t1466100064000\n70281\t90006\t1.0\t1466103828000\n38808\t10011\t1.0\t1466100048000\n38808\t10012\t1.0\t1466100048000\n38808\t10013\t1.0\t1466100050000\n38808\t90005\t1.0\t1466100044000\n38808\t90006\t1.0\t1466100044000\n38808\t90007\t1.0\t1466100044000\n36401\t10008\t1.0\t1466100122000\n36401\t10009\t1.0\t1466100122000\n36401\t10010\t1.0\t1466100122000\n36401\t90005\t1.0\t1466100116000\n36401\t90006\t1.0\t1466100116000\n36401\t90007\t1.0\t1466100118000\n87264\t10003\t1.0\t1468164134000\n87264\t10004\t1.0\t1468164132000\n87264\t10012\t1.0\t1468164136000\n87264\t10013\t1.0\t1468164136000\n87264\t90006\t1.0\t1468164132000\n87264\t90007\t1.0\t1468164134000\n68754\t90009\t1.0\t1466100158000\n68754\t90010\t1.0\t1466100186000\n30699\t10001\t1.0\t1466091806000\n30699\t90011\t1.0\t1466091806000\n61945\t10004\t1.0\t1466100164000\n61945\t10005\t1.0\t1466100162000\n61945\t10007\t1.0\t1466100108000\n61945\t10011\t1.0\t1466100100000\n61945\t90005\t1.0\t1466100112000\n61945\t90006\t1.0\t1466100112000\n61945\t90007\t1.0\t1466100112000\n90162\t10001\t1.0\t1466099706000\n90162\t10007\t1.0\t1466100190000\n90162\t10008\t1.0\t1466099708000\n90162\t10010\t1.0\t1466100206000\n90162\t10011\t1.0\t1466100192000\n90162\t10013\t1.0\t1466099708000\n90162\t90001\t1.0\t1466100194000\n90162\t90005\t1.0\t1466099702000\n90162\t90006\t1.0\t1466100186000\n90162\t90007\t1.0\t1466100186000\n90162\t90011\t1.0\t1466100194000\n90162\t90014\t1.0\t1466099704000\n32940\t10005\t1.0\t1466100186000\n32940\t10007\t1.0\t1466100188000\n32940\t10015\t1.0\t1466100182000\n32940\t90012\t1.0\t1466100192000\n32940\t90013\t1.0\t1466100192000\n32940\t90015\t1.0\t1466100194000\n79586\t10006\t1.0\t1466100840000\n79586\t10007\t1.0\t1466100840000\n79586\t10008\t1.0\t1466100154000\n79586\t10010\t1.0\t1466100156000\n79586\t90002\t1.0\t1466100126000\n79586\t90008\t1.0\t1466100180000\n79586\t90011\t1.0\t1466100186000\n79586\t90012\t1.0\t1466100842000\n79586\t90013\t1.0\t1466100842000\n79586\t90014\t1.0\t1466100842000\n79586\t90015\t1.0\t1466100184000\n82059\t10004\t1.0\t1466100180000\n82059\t10010\t1.0\t1466100184000\n82059\t10011\t1.0\t1466100176000\n82059\t90005\t1.0\t1466100190000\n82059\t90006\t1.0\t1466100186000\n82059\t90007\t1.0\t1466100186000\n82059\t90008\t1.0\t1466100190000\n34615\t10006\t1.0\t1466092100000\n34615\t10012\t1.0\t1466092104000\n34615\t10014\t1.0\t1466092102000\n34615\t90002\t1.0\t1466092112000\n34615\t90011\t1.0\t1466092108000\n34615\t90014\t1.0\t1466092112000\n34643\t10006\t1.0\t1466091870000\n34643\t90011\t1.0\t1466091880000\n95506\t10003\t1.0\t1468182208000\n95506\t10004\t1.0\t1468182208000\n95506\t90003\t1.0\t1468182174000\n95506\t90004\t1.0\t1468182174000\n95506\t90008\t1.0\t1468182176000\n95506\t90009\t1.0\t1468182176000\n95506\t90013\t1.0\t1468182206000\n95506\t90014\t1.0\t1468182206000\n1833\t10001\t1.0\t1468165926000\n1833\t10002\t1.0\t1468165924000\n1833\t10003\t1.0\t1468165924000\n1833\t90004\t1.0\t1468165924000\n1833\t90006\t1.0\t1468165924000\n44954\t10001\t1.0\t1466091704000\n44954\t90011\t1.0\t1466091714000\n59855\t10011\t1.0\t1468168114000\n59855\t10012\t1.0\t1468168114000\n59855\t10013\t1.0\t1468168114000\n59855\t10014\t1.0\t1468168114000\n59855\t10015\t1.0\t1468168112000\n59855\t90001\t1.0\t1468168110000\n59855\t90002\t1.0\t1468168110000\n59855\t90003\t1.0\t1468168110000\n59855\t90004\t1.0\t1468168112000\n57462\t10001\t1.0\t1466092046000\n57462\t10003\t1.0\t1466092056000\n57462\t10006\t1.0\t1466092024000\n57462\t10010\t1.0\t1466092054000\n57462\t10012\t1.0\t1466092066000\n57462\t10013\t1.0\t1466092082000\n57462\t10014\t1.0\t1466092050000\n57462\t90011\t1.0\t1466092060000\n28865\t10001\t1.0\t1466100062000\n28865\t10003\t1.0\t1466100158000\n28865\t10007\t1.0\t1466100066000\n28865\t90004\t1.0\t1466100094000\n28865\t90009\t1.0\t1466100092000\n28865\t90011\t1.0\t1466100082000\n21141\t10002\t1.0\t1466099810000\n21141\t10003\t1.0\t1466099812000\n21141\t10004\t1.0\t1466099812000\n21141\t90001\t1.0\t1466099800000\n21141\t90002\t1.0\t1466099802000\n21141\t90003\t1.0\t1466099804000\n88190\t10004\t1.0\t1466100046000\n88190\t10008\t1.0\t1466100062000\n88190\t10009\t1.0\t1466100122000\n88190\t10010\t1.0\t1466100068000\n88190\t10014\t1.0\t1466100124000\n88190\t90010\t1.0\t1466100058000\n88190\t90012\t1.0\t1466100054000\n88190\t90013\t1.0\t1466100054000\n"
       },
       "dateCreated": "Jul 3, 2015 5:15:11 AM",
-      "dateStarted": "May 16, 2016 9:28:27 PM",
-      "dateFinished": "May 16, 2016 9:28:29 PM",
+      "dateStarted": "Jul 10, 2016 8:35:35 PM",
+      "dateFinished": "Jul 10, 2016 8:35:38 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
-      "title": "Total ratings and Distinct Users",
-      "text": "//import org.apache.spark.sql.functions._\n\n//val totalRatings \u003d itemRatingsDF.count()\n//val distinctUsers \u003d itemRatingsDF.select(countDistinct($\"userId\")).collect()(0)(0)",
-      "dateUpdated": "May 16, 2016 9:28:27 PM",
+      "title": "Number of Distinct Users Participating",
+      "text": "import org.apache.spark.sql.functions._\n\nval distinctUsers \u003d itemRatingsDF.select(countDistinct($\"userId\")).collect()(0)(0)",
+      "dateUpdated": "Jul 10, 2016 8:35:35 PM",
       "config": {
         "colWidth": 12.0,
         "graph": {
@@ -112,7 +135,7 @@
         "tableHide": false,
         "editorMode": "ace/mode/scala",
         "enabled": true,
-        "editorHide": true
+        "editorHide": false
       },
       "settings": {
         "params": {},
@@ -123,18 +146,18 @@
       "result": {
         "code": "SUCCESS",
         "type": "TEXT",
-        "msg": ""
+        "msg": "import org.apache.spark.sql.functions._\ndistinctUsers: Any \u003d 38\n"
       },
       "dateCreated": "Jul 3, 2015 6:09:46 AM",
-      "dateStarted": "May 16, 2016 9:28:28 PM",
-      "dateFinished": "May 16, 2016 9:28:29 PM",
+      "dateStarted": "Jul 10, 2016 8:35:37 PM",
+      "dateFinished": "Jul 10, 2016 8:35:43 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "title": "Enrich the item Ratings",
       "text": "val enrichedItemRatingsDF \u003d itemRatingsDF.join(itemsDF, $\"items.itemId\" \u003d\u003d\u003d $\"itemRatings.itemId\")\n  .select($\"items.itemId\", $\"title\", $\"img\")",
-      "dateUpdated": "May 16, 2016 9:28:27 PM",
+      "dateUpdated": "Jul 10, 2016 8:35:35 PM",
       "config": {
         "colWidth": 12.0,
         "graph": {
@@ -148,7 +171,8 @@
         },
         "enabled": true,
         "editorMode": "ace/mode/scala",
-        "title": true
+        "title": true,
+        "editorHide": false
       },
       "settings": {
         "params": {},
@@ -162,20 +186,20 @@
         "msg": "enrichedItemRatingsDF: org.apache.spark.sql.DataFrame \u003d [itemId: bigint, title: string, img: string]\n"
       },
       "dateCreated": "Apr 23, 2016 5:01:20 AM",
-      "dateStarted": "May 16, 2016 9:28:29 PM",
-      "dateFinished": "May 16, 2016 9:28:29 PM",
+      "dateStarted": "Jul 10, 2016 8:35:38 PM",
+      "dateFinished": "Jul 10, 2016 8:35:43 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "title": "distribution of rating count ",
       "text": "val enrichedItemRatingsCountDF \u003d enrichedItemRatingsDF\n  .groupBy($\"items.itemId\", $\"title\", $\"img\")\n  .agg(count($\"items.itemId\").as(\"count\"))\n  .orderBy($\"count\".desc, $\"items.itemId\")\n  .limit(5)\n\nz.show(enrichedItemRatingsCountDF)",
-      "dateUpdated": "May 16, 2016 9:28:27 PM",
+      "dateUpdated": "Jul 10, 2016 8:35:35 PM",
       "config": {
         "colWidth": 12.0,
         "graph": {
           "mode": "multiBarChart",
-          "height": 348.0,
+          "height": 212.0,
           "optionOpen": false,
           "keys": [
             {
@@ -215,17 +239,18 @@
       "result": {
         "code": "SUCCESS",
         "type": "TABLE",
-        "msg": "itemId\ttitle\timg\tcount\n7\tApache Spark\timg/software/spark.png\t30\n42\tScala\timg/software/scala.png\t27\n18\tApache Kafka\timg/software/kafka.png\t23\n10\tApache HDFS\timg/software/hdfs.png\t15\n49\tAmazon Web Services\timg/software/aws.png\t15\n"
+        "msg": "itemId\ttitle\timg\tcount\n10012\tJohnny Depp\timg/actors/10012.jpg\t17\n10001\tLeonardo DiCaprio\timg/actors/10001.jpg\t14\n10004\tMorgan Freeman\timg/actors/10004.jpg\t13\n10006\tTom Cruise\timg/actors/10006.jpg\t13\n90006\tTatyana Ali\timg/actors/90006.jpg\t13\n"
       },
       "dateCreated": "Dec 25, 2015 7:35:11 PM",
-      "dateStarted": "May 16, 2016 9:28:29 PM",
-      "dateFinished": "May 16, 2016 9:28:31 PM",
+      "dateStarted": "Jul 10, 2016 8:35:43 PM",
+      "dateFinished": "Jul 10, 2016 8:35:45 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "%md ### Side Note:  Compare DataFrame and SQL Query Plans",
-      "dateUpdated": "May 16, 2016 9:28:27 PM",
+      "title": "Save Top 5 Most Rated Items To Redis",
+      "text": "import com.advancedspark.serving.spark.Dynomite\n\nval topKItemsByRating \u003d enrichedItemRatingsCountDF.select($\"items.itemId\").limit(5)\n\n// Convert Row -\u003e itemId\nval topK \u003d topKItemsByRating.map(row \u003d\u003e {\n  row.getLong(0)\n}).collect()\n\nDynomite.client.set(\"topk\", topK.mkString(\",\"))\n\nval topk \u003d Dynomite.client.get(\"topk\")",
+      "dateUpdated": "Jul 10, 2016 8:35:35 PM",
       "config": {
         "colWidth": 12.0,
         "graph": {
@@ -238,159 +263,30 @@
           "scatter": {}
         },
         "enabled": true,
-        "editorMode": "ace/mode/markdown",
-        "editorHide": true
-      },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "jobName": "paragraph_1457238016249_-353959629",
-      "id": "20160306-042016_536378124",
-      "result": {
-        "code": "SUCCESS",
-        "type": "HTML",
-        "msg": "\u003ch3\u003eSide Note:  Compare DataFrame and SQL Query Plans\u003c/h3\u003e\n"
-      },
-      "dateCreated": "Mar 6, 2016 4:20:16 AM",
-      "dateStarted": "May 16, 2016 9:28:27 PM",
-      "dateFinished": "May 16, 2016 9:28:27 PM",
-      "status": "FINISHED",
-      "progressUpdateIntervalMs": 500
-    },
-    {
-      "text": "enrichedItemRatingsCountDF.explain(true)",
-      "dateUpdated": "May 16, 2016 9:28:27 PM",
-      "config": {
-        "colWidth": 12.0,
-        "graph": {
-          "mode": "table",
-          "height": 300.0,
-          "optionOpen": false,
-          "keys": [],
-          "values": [],
-          "groups": [],
-          "scatter": {}
-        },
-        "enabled": true,
-        "editorMode": "ace/mode/scala",
-        "lineNumbers": false
-      },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "jobName": "paragraph_1457238155680_-55997059",
-      "id": "20160306-042235_1222664988",
-      "result": {
-        "code": "SUCCESS",
-        "type": "TEXT",
-        "msg": "\u003d\u003d Parsed Logical Plan \u003d\u003d\nLimit 5\n+- Sort [count#184L DESC,itemId#176L ASC], true\n   +- Aggregate [itemId#176L,title#175,img#173], [itemId#176L,title#175,img#173,(count(itemId#176L),mode\u003dComplete,isDistinct\u003dfalse) AS count#184L]\n      +- Project [itemId#176L,title#175,img#173]\n         +- Join Inner, Some((itemId#176L \u003d cast(itemId#183 as bigint)))\n            :- Subquery itemRatings\n            :  +- Project [userId#182,itemid#178 AS itemId#183,rating#180,timestamp#181L]\n            :     +- Project [userid#177 AS userId#182,itemid#178,rating#180,timestamp#181L]\n            :        +- Project [userid#177,itemid#178,rating#180,timestamp#181L]\n            :           +- Relation[userid#177,itemid#178,geocity#179,rating#180,timestamp#181L] org.apache.spark.sql.cassandra.CassandraSourceRelation@20001a78\n            +- Subquery items\n               +- Project [category#170,description#171,id#172L AS itemId#176L,img#173,tags#174,title#175]\n                  +- Relation[category#170,description#171,id#172L,img#173,tags#174,title#175] JSONRelation\n\n\u003d\u003d Analyzed Logical Plan \u003d\u003d\nitemId: bigint, title: string, img: string, count: bigint\nLimit 5\n+- Sort [count#184L DESC,itemId#176L ASC], true\n   +- Aggregate [itemId#176L,title#175,img#173], [itemId#176L,title#175,img#173,(count(itemId#176L),mode\u003dComplete,isDistinct\u003dfalse) AS count#184L]\n      +- Project [itemId#176L,title#175,img#173]\n         +- Join Inner, Some((itemId#176L \u003d cast(itemId#183 as bigint)))\n            :- Subquery itemRatings\n            :  +- Project [userId#182,itemid#178 AS itemId#183,rating#180,timestamp#181L]\n            :     +- Project [userid#177 AS userId#182,itemid#178,rating#180,timestamp#181L]\n            :        +- Project [userid#177,itemid#178,rating#180,timestamp#181L]\n            :           +- Relation[userid#177,itemid#178,geocity#179,rating#180,timestamp#181L] org.apache.spark.sql.cassandra.CassandraSourceRelation@20001a78\n            +- Subquery items\n               +- Project [category#170,description#171,id#172L AS itemId#176L,img#173,tags#174,title#175]\n                  +- Relation[category#170,description#171,id#172L,img#173,tags#174,title#175] JSONRelation\n\n\u003d\u003d Optimized Logical Plan \u003d\u003d\nLimit 5\n+- Sort [count#184L DESC,itemId#176L ASC], true\n   +- Aggregate [itemId#176L,title#175,img#173], [itemId#176L,title#175,img#173,(count(itemId#176L),mode\u003dComplete,isDistinct\u003dfalse) AS count#184L]\n      +- Project [itemId#176L,title#175,img#173]\n         +- Join Inner, Some((itemId#176L \u003d cast(itemId#183 as bigint)))\n            :- Project [itemid#178 AS itemId#183]\n            :  +- Relation[userid#177,itemid#178,geocity#179,rating#180,timestamp#181L] org.apache.spark.sql.cassandra.CassandraSourceRelation@20001a78\n            +- Project [id#172L AS itemId#176L,title#175,img#173]\n               +- Relation[category#170,description#171,id#172L,img#173,tags#174,title#175] JSONRelation\n\n\u003d\u003d Physical Plan \u003d\u003d\nTakeOrderedAndProject(limit\u003d5, orderBy\u003d[count#184L DESC,itemId#176L ASC], output\u003d[itemId#176L,title#175,img#173,count#184L])\n+- ConvertToSafe\n   +- TungstenAggregate(key\u003d[itemId#176L,title#175,img#173], functions\u003d[(count(itemId#176L),mode\u003dFinal,isDistinct\u003dfalse)], output\u003d[itemId#176L,title#175,img#173,count#184L])\n      +- TungstenExchange hashpartitioning(itemId#176L,title#175,img#173,200), None\n         +- TungstenAggregate(key\u003d[itemId#176L,title#175,img#173], functions\u003d[(count(itemId#176L),mode\u003dPartial,isDistinct\u003dfalse)], output\u003d[itemId#176L,title#175,img#173,count#187L])\n            +- Project [itemId#176L,title#175,img#173]\n               +- BroadcastHashJoin [cast(itemId#183 as bigint)], [itemId#176L], BuildRight\n                  :- Project [itemid#178 AS itemId#183]\n                  :  +- Scan org.apache.spark.sql.cassandra.CassandraSourceRelation@20001a78[itemid#178] \n                  +- Project [id#172L AS itemId#176L,title#175,img#173]\n                     +- Scan JSONRelation[id#172L,title#175,img#173] InputPaths: file:/root/pipeline/myapps/html/advancedspark.com/json/software.json\n"
-      },
-      "dateCreated": "Mar 6, 2016 4:22:35 AM",
-      "dateStarted": "May 16, 2016 9:28:30 PM",
-      "dateFinished": "May 16, 2016 9:28:31 PM",
-      "status": "FINISHED",
-      "progressUpdateIntervalMs": 500
-    },
-    {
-      "text": "itemsDF.registerTempTable(\"items_temp\")\nitemRatingsDF.registerTempTable(\"item_ratings_temp\")\n\nval enrichedItemRatingsCountSql \u003d sqlContext.sql(\"\"\"SELECT items_temp.itemId, title, count(items_temp.itemId) as count FROM item_ratings_temp\n  JOIN items_temp ON (item_ratings_temp.itemId \u003d items_temp.itemid) \n  GROUP BY items_temp.itemId, title \n  ORDER BY count \n  DESC LIMIT 5\"\"\")\n  \nenrichedItemRatingsCountSql.explain()",
-      "dateUpdated": "May 16, 2016 9:28:27 PM",
-      "config": {
-        "colWidth": 12.0,
-        "graph": {
-          "mode": "table",
-          "height": 300.0,
-          "optionOpen": false,
-          "keys": [],
-          "values": [],
-          "groups": [],
-          "scatter": {}
-        },
-        "enabled": true,
-        "editorMode": "ace/mode/scala"
-      },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "jobName": "paragraph_1457237439293_2074159508",
-      "id": "20160306-041039_153351581",
-      "result": {
-        "code": "SUCCESS",
-        "type": "TEXT",
-        "msg": "enrichedItemRatingsCountSql: org.apache.spark.sql.DataFrame \u003d [itemId: bigint, title: string, count: bigint]\n\u003d\u003d Physical Plan \u003d\u003d\nTakeOrderedAndProject(limit\u003d5, orderBy\u003d[count#190L DESC], output\u003d[itemId#176L,title#175,count#190L])\n+- ConvertToSafe\n   +- TungstenAggregate(key\u003d[itemId#176L,title#175], functions\u003d[(count(itemId#176L),mode\u003dFinal,isDistinct\u003dfalse)], output\u003d[itemId#176L,title#175,count#190L])\n      +- TungstenExchange hashpartitioning(itemId#176L,title#175,200), None\n         +- TungstenAggregate(key\u003d[itemId#176L,title#175], functions\u003d[(count(itemId#176L),mode\u003dPartial,isDistinct\u003dfalse)], output\u003d[itemId#176L,title#175,count#196L])\n            +- Project [itemId#176L,title#175]\n               +- BroadcastHashJoin [cast(itemId#183 as bigint)], [itemid#176L], BuildRight\n                  :- Project [itemid#178 AS itemId#183]\n                  :  +- Scan org.apache.spark.sql.cassandra.CassandraSourceRelation@20001a78[itemid#178] \n                  +- Project [id#172L AS itemId#176L,title#175]\n                     +- Scan JSONRelation[id#172L,title#175] InputPaths: file:/root/pipeline/myapps/html/advancedspark.com/json/software.json\n"
-      },
-      "dateCreated": "Mar 6, 2016 4:10:39 AM",
-      "dateStarted": "May 16, 2016 9:28:31 PM",
-      "dateFinished": "May 16, 2016 9:28:34 PM",
-      "status": "FINISHED",
-      "progressUpdateIntervalMs": 500
-    },
-    {
-      "title": "Save Top 5 Most Rated Items to ElasticSearch",
-      "text": "import org.elasticsearch.spark.sql._\nimport org.apache.spark.sql.SaveMode\n\nval esConfig \u003d Map(\"pushdown\" -\u003e \"true\",\n  \"es.nodes\" -\u003e \"127.0.0.1\", \n  \"es.port\" -\u003e \"9200\")\n\nenrichedItemRatingsCountDF.limit(5).write.format(\"org.elasticsearch.spark.sql\")\n  .mode(SaveMode.Overwrite)\n  .options(esConfig)\n  .save(\"advancedspark/top-items-by-exact-rating-count\")",
-      "dateUpdated": "May 16, 2016 9:28:27 PM",
-      "config": {
-        "colWidth": 12.0,
-        "graph": {
-          "mode": "table",
-          "height": 196.0,
-          "optionOpen": false,
-          "keys": [
-            {
-              "name": "itemId",
-              "index": 0.0,
-              "aggr": "sum"
-            }
-          ],
-          "values": [
-            {
-              "name": "title",
-              "index": 1.0,
-              "aggr": "sum"
-            }
-          ],
-          "groups": [],
-          "scatter": {
-            "xAxis": {
-              "name": "itemId",
-              "index": 0.0,
-              "aggr": "sum"
-            },
-            "yAxis": {
-              "name": "title",
-              "index": 1.0,
-              "aggr": "sum"
-            }
-          }
-        },
         "editorMode": "ace/mode/scala",
         "title": true,
-        "enabled": true,
-        "editorHide": false,
-        "tableHide": false
+        "editorHide": false
       },
       "settings": {
         "params": {},
         "forms": {}
       },
-      "jobName": "paragraph_1447754108027_-274054386",
-      "id": "20151117-095508_447614045",
+      "jobName": "paragraph_1465622456277_497530075",
+      "id": "20160611-052056_1476143169",
       "result": {
         "code": "SUCCESS",
         "type": "TEXT",
-        "msg": "import org.elasticsearch.spark.sql._\nimport org.apache.spark.sql.SaveMode\nesConfig: scala.collection.immutable.Map[String,String] \u003d Map(pushdown -\u003e true, es.nodes -\u003e 127.0.0.1, es.port -\u003e 9200)\n"
+        "msg": "import com.advancedspark.serving.spark.Dynomite\ntopKItemsByRating: org.apache.spark.sql.DataFrame \u003d [itemId: bigint]\ntopK: Array[Long] \u003d Array(10012, 10001, 10004, 10006, 90006)\nres92: String \u003d OK\ntopk: String \u003d 10012,10001,10004,10006,90006\n"
       },
-      "dateCreated": "Nov 17, 2015 9:55:08 AM",
-      "dateStarted": "May 16, 2016 9:28:32 PM",
-      "dateFinished": "May 16, 2016 9:28:36 PM",
+      "dateCreated": "Jun 11, 2016 5:20:56 AM",
+      "dateStarted": "Jul 10, 2016 8:35:44 PM",
+      "dateFinished": "Jul 10, 2016 8:35:48 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "",
-      "dateUpdated": "May 16, 2016 9:28:27 PM",
+      "dateUpdated": "Jul 10, 2016 8:35:36 PM",
       "config": {
         "colWidth": 12.0,
         "graph": {
@@ -403,7 +299,8 @@
           "scatter": {}
         },
         "enabled": true,
-        "editorMode": "ace/mode/scala"
+        "editorMode": "ace/mode/scala",
+        "editorHide": false
       },
       "settings": {
         "params": {},
@@ -416,8 +313,8 @@
         "type": "TEXT"
       },
       "dateCreated": "Apr 17, 2016 7:51:52 PM",
-      "dateStarted": "May 16, 2016 9:28:34 PM",
-      "dateFinished": "May 16, 2016 9:28:36 PM",
+      "dateStarted": "Jul 10, 2016 8:35:46 PM",
+      "dateFinished": "Jul 10, 2016 8:35:48 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     }

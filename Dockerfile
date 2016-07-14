@@ -13,7 +13,7 @@ FROM ubuntu:14.04
 #
 ENV \ 
  CASSANDRA_VERSION=2.2.6 \
- CONFLUENT_VERSION=2.0.1 \
+ CONFLUENT_VERSION=3.0.0 \
  ELASTICSEARCH_VERSION=2.3.0 \
  LOGSTASH_VERSION=2.3.0 \
  KIBANA_VERSION=4.5.0 \
@@ -24,16 +24,18 @@ ENV \
  ZEPPELIN_VERSION=0.6.0 \
  GENSORT_VERSION=1.5 \
  SCALA_VERSION=2.10.5 \
+ SCALA_MAJOR_VERSION=2.10 \
  SPARK_VERSION=1.6.1 \
+ SPARK_BLEEDINGEDGE_VERSION=2.0.0-SNAPSHOT \
+ SPARK_PREVIOUS_VERSION=1.5.1 \
  STANFORD_CORENLP_VERSION=3.6.0 \
- STREAMING_MATRIX_FACTORIZATION_VERSION=0.1.0 \
  NIFI_VERSION=0.6.1 \
  PRESTO_VERSION=0.137 \
  TITAN_VERSION=1.0.0-hadoop1 \
  AKKA_VERSION=2.3.11 \
  SPARK_CASSANDRA_CONNECTOR_VERSION=1.4.0 \
  SPARK_ELASTICSEARCH_CONNECTOR_VERSION=2.3.0.BUILD-SNAPSHOT \
- KAFKA_CLIENT_VERSION=0.9.0.1 \
+ KAFKA_CLIENT_VERSION=0.10.0.0 \
  SCALATEST_VERSION=2.2.4 \
  JEDIS_VERSION=2.7.3 \
  SPARK_CSV_CONNECTOR_VERSION=1.4.0 \
@@ -47,18 +49,31 @@ ENV \
  GRAPHFRAMES_VERSION=0.1.0-spark1.6 \
  FLINK_VERSION=1.0.0 \
  BAZEL_VERSION=0.2.2 \ 
- TENSORFLOW_VERSION=0.8.0 \
+ TENSORFLOW_VERSION=0.9.0 \
  TENSORFLOW_SERVING_VERSION=0.4.1 \
 # JAVA_HOME required here (versus config/bash/pipeline.bashrc) 
 #   in order to properly install Bazel (used by TensorFlow) 
  JAVA_HOME=/usr/lib/jvm/java-8-oracle \
  FINAGLE_VERSION=6.34.0 \ 
- HYSTRIX_VERSION=1.5.2 \
+ HYSTRIX_VERSION=1.5.3 \
+ HYSTRIX_DASHBOARD_VERSION=1.5.3 \
  INDEXEDRDD_VERSION=0.3 \
  ANKUR_PART_VERSION=0.1 \
  JANINO_VERSION=2.7.8 \
  BETTER_FILES_VERSION=2.14.0 \
- COMMONS_DAEMON_VERSION=1.0.15
+ COMMONS_DAEMON_VERSION=1.0.15 \
+ SPARK_REDIS_CONNECTOR_VERSION=0.2.0 \
+ TENSORFRAMES_VERSION=0.2.2 \
+ DYNO_VERSION=1.4.6 \
+ JSON4S_VERSION=3.3.0 \
+ SPRING_BOOT_VERSION=1.3.5.RELEASE \
+ SPRING_CLOUD_VERSION=1.1.2.RELEASE \
+ SPRING_CORE_VERSION=4.3.0.RELEASE \
+# We can't promote this over version 2.5.0 otherwise it conflicts with Spark 1.6 version of Jackson.
+# TODO:  Revisit once we upgrade to Spark 2.0.0 which shades most internal dependencies
+ MAXMIND_GEOIP_VERSION=2.5.0 \
+ ATLAS_VERSION=1.4.5 \
+ JMETER_VERSION=3.0
 
 RUN \
  apt-get update \
@@ -74,6 +89,7 @@ RUN \
  && apt-get install -y git \
  && apt-get install -y openssh-server \
  && apt-get install -y apache2 \
+ && apt-get install -y libssl-dev \
 
 # iPython/Jupyter
  && apt-get install -y python-dev \
@@ -82,7 +98,7 @@ RUN \
  && pip install ipyparallel \
 
 # TensorFlow (CPU-only)
- && pip install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-${TENSORFLOW_VERSION}-cp27-none-linux_x86_64.whl \
+ && pip install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-$TENSORFLOW_VERSION-cp27-none-linux_x86_64.whl \
 
 # TensorFlow GPU-enabled
 # && pip install --upgrade https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-${TENSORFLOW_VERSION}-cp27-none-linux_x86_64.whl \
@@ -101,16 +117,13 @@ RUN \
  && apt-get install -y python-matplotlib \
  && apt-get install -y python-nltk \
  && apt-get install -y python-sklearn \
-# TODO:  This is no longer needed as of TF v0.8.0
- && pip install --upgrade skflow \
- && pip install ggplot \
- && pip install networkx \
+ && pip install --upgrade networkx \
  && apt-get install -y pkg-config \
  && apt-get install -y libgraphviz-dev \
 
 # Cython (Feather)
- && pip install cython \
- && pip install feather-format \
+ && pip install --upgrade cython \
+ && pip install --upgrade feather-format \
 
 # MySql Python Adapter (Used by SQLAlchemy/Airflow)
  && apt-get install -y python-mysqldb \
@@ -159,7 +172,7 @@ RUN \
  && rm bazel-$BAZEL_VERSION-installer-linux-x86_64.sh \
 
 # TensorFlow Serving
- && pip install grpcio \
+ && pip install --upgrade grpcio \
  && apt-get update \
  && apt-get install -y \
       build-essential \
@@ -175,11 +188,11 @@ RUN \
       zip \
       zlib1g-dev \
  && cd ~ \
- && git clone -b $TENSORFLOW_SERVING_VERSION --recurse-submodules https://github.com/tensorflow/serving tensorflow-serving-$TENSORFLOW_SERVING_VERSION \
+ && git clone -b $TENSORFLOW_SERVING_VERSION --single-branch --recurse-submodules https://github.com/tensorflow/serving.git \
 
-# TensorFLow
+# TensorFlow Source
  && cd ~ \
- && git clone -b v$TENSORFLOW_VERSION --recurse-submodules https://github.com/tensorflow/tensorflow tensorflow-$TENSORFLOW_VERSION \
+ && git clone -b v$TENSORFLOW_VERSION --single-branch --recurse-submodules https://github.com/tensorflow/tensorflow.git \
 
 # Python NetworkX/Tribe Demos
  && pip install tribe \
@@ -188,12 +201,10 @@ RUN \
 RUN \
 # Get Latest Pipeline Code
  cd ~ \
- && git clone https://github.com/fluxcapacitor/pipeline.git
-
-RUN \
+ && git clone --single-branch --recurse-submodules https://github.com/fluxcapacitor/pipeline.git \
 # Source the pipeline-specific env variables
 # This is needed to re-attach to a Docker container after exiting
- cd ~ \
+ && cd ~ \
  && echo "" >> ~/.bashrc \
  && echo "# Pipeline-specific" >> ~/.bashrc \
  && echo "if [ -f ~/pipeline/config/bash/pipeline.bashrc ]; then" >> ~/.bashrc \
@@ -238,7 +249,6 @@ RUN \
  && kibana-${KIBANA_VERSION}-linux-x64/bin/kibana plugin --install elasticsearch/graph/latest \
  && kibana-${KIBANA_VERSION}-linux-x64/bin/kibana plugin --install elastic/sense \
  && kibana-${KIBANA_VERSION}-linux-x64/bin/kibana plugin --install kibana/timelion \
-# && kibana-${KIBANA_VERSION}-linux-x64/bin/kibana plugin --install tagcloud -u https://github.com/stormpython/tagcloud/archive/master.zip \
  && kibana-${KIBANA_VERSION}-linux-x64/bin/kibana plugin --install heatmap -u https://github.com/stormpython/heatmap/archive/master.zip \
  && kibana-${KIBANA_VERSION}-linux-x64/bin/kibana plugin --install vectormap -u https://github.com/stormpython/vectormap/archive/master.zip \
 
@@ -248,11 +258,17 @@ RUN \
  && tar xvzf apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz \
  && rm apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz \
 
-# Apache Kafka (Confluent Distribution)
+# Apache Kafka (Confluent 2.0 Distribution)
+# && cd ~ \
+# && wget http://packages.confluent.io/archive/2.0/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.tar.gz \
+# && tar xvzf confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.tar.gz \
+# && rm confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.tar.gz \
+
+# Apache Kafka (Confluent 3.0 Distribution)
  && cd ~ \
- && wget http://packages.confluent.io/archive/2.0/confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.tar.gz \
- && tar xvzf confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.tar.gz \
- && rm confluent-${CONFLUENT_VERSION}-${SCALA_VERSION}.tar.gz \
+ && wget http://packages.confluent.io/archive/3.0/confluent-${CONFLUENT_VERSION}-${SCALA_MAJOR_VERSION}.tar.gz \
+ && tar xvzf confluent-${CONFLUENT_VERSION}-${SCALA_MAJOR_VERSION}.tar.gz \
+ && rm confluent-${CONFLUENT_VERSION}-${SCALA_MAJOR_VERSION}.tar.gz \
 
 # Apache Spark
  && cd ~ \
@@ -260,9 +276,21 @@ RUN \
  && tar xvzf spark-${SPARK_VERSION}-bin-fluxcapacitor.tgz \
  && rm spark-${SPARK_VERSION}-bin-fluxcapacitor.tgz \
 
+# Apache Bleeding Edge Spark
+ && cd ~ \
+ && wget https://s3.amazonaws.com/fluxcapacitor.com/packages/spark-${SPARK_BLEEDINGEDGE_VERSION}-bin-fluxcapacitor.tgz \
+ && tar xvzf spark-${SPARK_BLEEDINGEDGE_VERSION}-bin-fluxcapacitor.tgz \
+ && rm spark-${SPARK_BLEEDINGEDGE_VERSION}-bin-fluxcapacitor.tgz \
+
+# Apache Previous Spark
+ && cd ~ \
+ && wget https://s3.amazonaws.com/fluxcapacitor.com/packages/spark-${SPARK_PREVIOUS_VERSION}-bin-fluxcapacitor.tgz \
+ && tar xvzf spark-${SPARK_PREVIOUS_VERSION}-bin-fluxcapacitor.tgz \
+ && rm spark-${SPARK_PREVIOUS_VERSION}-bin-fluxcapacitor.tgz \
+
 # Livy Spark REST Server
  && cd ~ \
- && git clone https://github.com/cloudera/livy.git \ 
+ && git clone --single-branch --recurse-submodules https://github.com/cloudera/livy.git \ 
  && cd livy \
  && mvn -DskipTests -Dspark.version=${SPARK_VERSION} clean package \
 
@@ -279,11 +307,10 @@ RUN \
  && rm redis-${REDIS_VERSION}.tar.gz \
  && cd redis-${REDIS_VERSION} \
  && make install \
- && cd ~ \
 
 # Webdis Redis REST Server
  && cd ~ \
- && git clone https://github.com/nicolasff/webdis.git \
+ && git clone --single-branch --recurse-submodules https://github.com/nicolasff/webdis.git \
  && cd webdis \
  && make \
 
@@ -306,6 +333,7 @@ RUN \
  && rm nifi-${NIFI_VERSION}-bin.tar.gz \
 
 # Flink
+ && cd ~ \
  && wget http://archive.apache.org/dist/flink/flink-${FLINK_VERSION}/flink-${FLINK_VERSION}-bin-hadoop26-scala_2.10.tgz \
  && tar xvzf flink-${FLINK_VERSION}-bin-hadoop26-scala_2.10.tgz \
  && rm flink-${FLINK_VERSION}-bin-hadoop26-scala_2.10.tgz \
@@ -328,52 +356,158 @@ RUN \
  && cd ~ \
  && wget http://s3.thinkaurelius.com/downloads/titan/titan-${TITAN_VERSION}.zip \
  && unzip titan-${TITAN_VERSION}.zip \
- && rm titan-${TITAN_VERSION}.zip 
- 
+ && rm titan-${TITAN_VERSION}.zip \
+
+# JMeter
+ && cd ~ \
+ && wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz \
+ && tar xvzf apache-jmeter-${JMETER_VERSION}.tgz \
+ && rm apache-jmeter-${JMETER_VERSION}.tgz \
+
+# Dynomite
+ && cd ~ \
+ && git clone --single-branch --recurse-submodules https://github.com/Netflix/dynomite.git \
+ && cd dynomite \
+ && autoreconf -fvi \
+ && CFLAGS="-ggdb3 -O0" ./configure --enable-debug=full \
+ && make \
+ && sudo make install \
+
+# Jenkins
+ && wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add - \ 
+ && echo "deb http://pkg.jenkins-ci.org/debian binary/" >> /etc/apt/sources.list \ 
+ && apt-get update \
+ && apt-get install -y jenkins \
+ && replace "HTTP_PORT=8080" "HTTP_PORT=10080" -- /etc/default/jenkins
+
 RUN \
 # Get Latest Pipeline Code 
  cd ~/pipeline \
- && git pull 
+ && git pull  
 
-RUN \
 # Sbt Feeder
- cd ~/pipeline/myapps/akka/feeder && sbt assembly 
-
 RUN \
+ cd ~/pipeline/myapps/akka/feeder && sbt clean assembly \
+
 # Sbt ML 
 # This is temporary while we figure out how to specify the following dependency as a --package into Spark (note `models` classifier)
 #   edu.stanford.corenlp:stanford-corenlp:${STANFORD_CORENLP_VERSION}:models
 # Classifiers don't appear to be supported by --packages
- cd ~ \
+ && cd ~ \
  && wget http://nlp.stanford.edu/software/stanford-corenlp-full-2015-12-09.zip \
  && unzip stanford-corenlp-full-2015-12-09.zip \
  && rm stanford-corenlp-full-2015-12-09.zip \
  && cd ~/pipeline/myapps/spark/ml \
  && cp ~/stanford-corenlp-full-2015-12-09/stanford-corenlp-${STANFORD_CORENLP_VERSION}-models.jar lib/ \
- && sbt package \
+ && sbt clean package \
 
 # Sbt Streaming
- && cd ~/pipeline/myapps/spark/streaming && sbt package \
+ && cd ~/pipeline/myapps/spark/streaming && sbt clean package \
 
 # Sbt SQL 
- && cd ~/pipeline/myapps/spark/sql && sbt package \
+ && cd ~/pipeline/myapps/spark/sql && sbt clean package \
 
 # Sbt Core 
- && cd ~/pipeline/myapps/spark/core && sbt package \
+ && cd ~/pipeline/myapps/spark/core && sbt clean package \
 
 # Sbt Flink CEP Streaming  
- && cd ~/pipeline/myapps/flink/streaming && sbt assembly \
+ && cd ~/pipeline/myapps/flink/streaming && sbt clean assembly \
 
-# Sbt Serving RecommendationService (Finagle)
- && cd ~/pipeline/myapps/serving/finagle && sbt assembly \
+# Sbt Serving Recommendation Service (Finagle)
+ && cd ~/pipeline/myapps/serving/finagle && sbt clean assembly \
+
+# Mvn Config Service (Spring + Netflix)
+ && cd ~/pipeline/myapps/serving/config && mvn -DskipTests clean install \
+
+# Mvn Discovery Service (Netflix Eureka)
+ && cd ~/pipeline/myapps/serving/discovery && mvn -DskipTests clean install \
+
+# Mvn Cluster-wide Circuit Breaker Metrics Service (Netflix Turbine)
+ && cd ~/pipeline/myapps/serving/turbine && mvn -DskipTests clean install \
+
+# Sbt Spark Serving 
+ && cd ~/pipeline/myapps/serving/spark && sbt clean package \
+
+# Sbt Serving Prediction Service (Spring + Netflix)
+ && cd ~/pipeline/myapps/serving/prediction && sbt clean package \
+
+# Sidecar for TensorFlow Serving
+ && cd ~/pipeline/myapps/serving/tensorflow && mvn -DskipTests clean install \
 
 # Sbt Kafka
- && cd ~/pipeline/myapps/kafka && sbt assembly \
+ && cd ~/pipeline/myapps/kafka && sbt clean assembly \
 
-# Sbt Codegen 
- && cd ~/pipeline/myapps/codegen && sbt assembly
+# Sbt Codegen
+ && cd ~/pipeline/myapps/codegen/spark/1.6.1 && sbt clean package \
+ && cd ~/pipeline/myapps/codegen/spark/2.0.0 && sbt clean package
+
+# Bleeding Edge Spark
+RUN \
+  cd ~ \
+  &&  wget https://s3.amazonaws.com/fluxcapacitor.com/packages/spark-${SPARK_BLEEDINGEDGE_VERSION}-bin-fluxcapacitor.tgz
+#  && git clone --branch 'branch-2.0' --single-branch https://github.com/apache/spark.git branch-2.0 
+#  && cd branch-2.0 \
+#  && ./dev/make-distribution.sh --name fluxcapacitor --tgz -Phadoop-2.6 -Dhadoop.version=2.6.0 -Psparkr -Phive -Pspark-ganglia-lgpl -Pnetlib-lgpl -Dscala-2.10 -DskipTests \
+#  && cp spark-2.0.0-SNAPSHOT-bin-fluxcapacitor.tgz ../ \
+#  && cd .. \
+#  && tar -xzvf spark-2.0.0-SNAPSHOT-bin-fluxcapacitor.tgz \
+#  && rm spark-2.0.0-SNAPSHOT-bin-fluxcapacitor.tgz
+
+# Other TensorFlow Projects
+RUN \
+  cd ~ \
+  && git clone --single-branch --recurse-submodules https://github.com/tensorflow/models.git \
+  && git clone --single-branch --recurse-submodules https://github.com/tensorflow/playground.git
+
+#RUN \
+# cd ~ \
+# && ~/pipeline/myapps/tensorflow/setup-tensorflow.sh
+
+RUN \
+ cd ~ \
+ && ~/pipeline/myapps/serving/tensorflow/setup-tensorflow-serving.sh
+
+# Bleeding Edge Theano
+RUN \
+  git clone --single-branch --recurse-submodules git://github.com/Theano/Theano.git \
+  && cd Theano \
+  && python setup.py develop --user
+
+# JupyterHub
+RUN \
+  apt-get install -y npm nodejs-legacy \
+  && npm install -g configurable-http-proxy \
+  && apt-get install -y python3-pip \
+  && pip3 install jupyterhub \
+  && pip3 install --upgrade notebook \
+
+# iPython3 Kernel 
+  && ipython3 kernel install \ 
+
+# Keras
+  && pip install keras 
+
+# Spinnaker
+RUN \
+  cd ~ \
+  && git clone --single-branch --recurse-submodules https://github.com/spinnaker/spinnaker.git
+
+# Hystrix Dashboard
+RUN \
+ cd ~ \
+ && mkdir -p ~/hystrix-dashboard-${HYSTRIX_DASHBOARD_VERSION} \
+ && cd hystrix-dashboard-${HYSTRIX_DASHBOARD_VERSION} \
+ && wget https://s3.amazonaws.com/fluxcapacitor.com/packages/standalone-hystrix-dashboard-${HYSTRIX_DASHBOARD_VERSION}-all.jar \
+
+# Atlas Metrics Collector
+ && cd ~ \
+ && mkdir -p ~/atlas-${ATLAS_VERSION} \
+ && cd atlas-${ATLAS_VERSION} \
+ && wget https://s3.amazonaws.com/fluxcapacitor.com/packages/atlas-${ATLAS_VERSION}-standalone.jar
 
 # Ports to expose 
-EXPOSE 80 6042 9160 9042 9200 7077 8080 8081 6060 6061 6062 6063 6064 6065 8090 10000 50070 50090 9092 6066 9000 19999 6081 7474 8787 5601 8989 7979 4040 4041 4042 4043 4044 4045 4046 4047 4048 4049 4050 4051 4052 4053 4054 4055 4056 4057 4058 4059 4060 6379 8888 54321 8099 8754 7379 6969 6970 6971 6972 6973 6974 6975 6976 6977 6978 6979 6980 5050 5060 7060 8182 9081 8998 9090 5080 5090
+EXPOSE 80 6042 9160 9042 9200 7077 8080 8081 6060 6061 6062 6063 6064 6065 8090 10000 50070 50090 9092 6066 9000 19999 6081 7474 8787 5601 8989 7979 4040 4041 4042 4043 4044 4045 4046 4047 4048 4049 4050 4051 4052 4053 4054 4055 4056 4057 4058 4059 4060 6379 8888 54321 8099 8754 7379 6969 6970 6971 6972 6973 6974 6975 6976 6977 6978 6979 6980 5050 5060 7060 8182 9081 8998 9090 5080 5090 5070 8000 8001 6006 3060 9040 8102 22222 10080 5040 8761 7101 5678
 
-WORKDIR /root
+WORKDIR /root/pipeline
+
+#CMD ["/root/pipeline/bin/setup/RUNME_ONCE.sh"]

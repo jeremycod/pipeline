@@ -23,7 +23,7 @@ curl -XPUT 'http://localhost:9200/advancedspark/' -d '{
 echo '...Creating Example Cassandra Keyspaces, Column Families/Tables...'
 echo '...**** MAKE SURE NO SPARK JOBS ARE RUNNING BEFORE STARTING THIS SCRIPT ****...'
 echo '...**** SPECIFICALLY, ANY JOB USING THE advancedspark COLUMN FAMILY OR advancedspark.item_ratings TABLE WILL FAIL AFTER RUNNING THIS SCRIPT ****...' 
-cqlsh -e "DROP KEYSPACE IF EXISTS advancedspark; CREATE KEYSPACE advancedspark WITH REPLICATION = {'class': 'SimpleStrategy',  'replication_factor':1}; USE advancedspark; DROP TABLE IF EXISTS item_ratings; USE advancedspark; CREATE TABLE item_ratings(userId int, itemId int, rating int, timestamp bigint, geocity text, PRIMARY KEY(userId, itemId)); USE advancedspark; COPY item_ratings (userId, itemId, rating, timestamp, geocity) FROM '/root/pipeline/datasets/graph/item-ratings-geo.csv';" 
+cqlsh -e "DROP KEYSPACE IF EXISTS advancedspark; CREATE KEYSPACE advancedspark WITH REPLICATION = {'class': 'SimpleStrategy',  'replication_factor':1}; USE advancedspark; DROP TABLE IF EXISTS item_ratings; USE advancedspark; CREATE TABLE item_ratings(userId int, itemId int, rating float, timestamp bigint, geocity text, PRIMARY KEY(userId, itemId)); USE advancedspark;COPY item_ratings (userId, itemId, rating, timestamp, geocity) FROM '/root/pipeline/datasets/graph/item-ratings-geo.csv';"
 
 echo '...Flushing Redis...'
 redis-cli FLUSHALL
@@ -41,3 +41,6 @@ spark-sql --repositories $SPARK_REPOSITORIES --jars $SPARK_SUBMIT_JARS --package
 #        (The EXTERNAL keyword does not affect this behavior.)
 cp $DATASETS_HOME/movielens/ml-latest/movies.csv $DATASETS_HOME/movielens/ml-latest/movies-hive-friendly.csv
 spark-sql --repositories $SPARK_REPOSITORIES --jars $SPARK_SUBMIT_JARS --packages $SPARK_SUBMIT_PACKAGES -e "DROP TABLE IF EXISTS movies_hive_friendly; CREATE EXTERNAL TABLE movies_hive_friendly (id INT, title STRING, tags STRING) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE; LOAD DATA INPATH '/root/pipeline/datasets/movielens/ml-latest/movies-hive-friendly.csv' OVERWRITE INTO TABLE movies_hive_friendly;"
+
+cp $DATASETS_HOME/movielens/ml-latest/ratings.csv $DATASETS_HOME/movielens/ml-latest/ratings-hive-friendly.csv
+spark-sql --repositories $SPARK_REPOSITORIES --jars $SPARK_SUBMIT_JARS --packages $SPARK_SUBMIT_PACKAGES -e "DROP TABLE IF EXISTS ratings_hive_friendly; CREATE EXTERNAL TABLE ratings_hive_friendly (userId INT, itemId INT, rating INT, timestamp INT) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE; LOAD DATA INPATH '/root/pipeline/datasets/movielens/ml-latest/ratings-hive-friendly.csv' OVERWRITE INTO TABLE ratings_hive_friendly;"

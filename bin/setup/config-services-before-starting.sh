@@ -42,11 +42,18 @@ tar -xjf $DATASETS_HOME/dating/genders-partitioned.avro.tar.bz2 -C $DATASETS_HOM
 tar -xjf $DATASETS_HOME/dating/genders-unpartitioned.avro.tar.bz2 -C $DATASETS_HOME/dating/
 tar -xjf $DATASETS_HOME/dating/ratings-partitioned.avro.tar.bz2 -C $DATASETS_HOME/dating/
 tar -xjf $DATASETS_HOME/dating/ratings-unpartitioned.avro.tar.bz2 -C $DATASETS_HOME/dating/
+tar --directory $DATASETS_HOME/serving/recommendations/spark-1.6.1/ -xzvf $DATASETS_HOME/serving/recommendations/spark-1.6.1/als.tar.gz
+tar --directory $DATASETS_HOME/notmnist/ -xzvf $DATASETS_HOME/notmnist/notMNIST_small.tar.gz
+
 # these part files were created with the following command:
 #   split --bytes=100MB --numeric-suffixes --suffix-length=1 lfw-deepfunneled.tgz lfw-deepfunneled.tgz-part-
 cat $DATASETS_HOME/eigenface/lfw-deepfunneled.tgz-part-* > $DATASETS_HOME/eigenface/lfw-deepfunneled.tgz
 tar --directory $DATASETS_HOME/eigenface/ -xzvf $DATASETS_HOME/eigenface/lfw-deepfunneled.tgz
-tar --directory $DATASETS_HOME/serving/recommendations/spark-1.6.1/ -xzvf $DATASETS_HOME/serving/recommendations/spark-1.6.1/als.tar.gz
+
+# these part files were created with the following command:
+#   split --bytes=100MB --numeric-suffixes --suffix-length=1 notMNIST_large.tar.gz notMNIST_large.tar.gz-part-
+#cat $DATASETS_HOME/notmnist/notMNIST_large.tar.gz-part-* > $DATASETS_HOME/notmnist/notMNIST_large.tar.gz
+#tar --directory $DATASETS_HOME/notmnist/ -xzvf $DATASETS_HOME/notmnist/notMNIST_large.tar.gz
 
 # Sample WebApp
 echo '...Configuring Example WebApp...'
@@ -56,16 +63,25 @@ a2ensite advancedspark.conf
 # Ideally, a symlink would be more appropriate, but Apache is being a pain with permissions
 cp -R $MYAPPS_HOME/html/advancedspark.com/* /var/www/html
 
-# My Apps
-echo '...Configuring Apps...'
+# Log Dirs
+echo '...Configuring Log Dirs...'
 mkdir -p $LOGS_HOME/akka/feeder
 mkdir -p $LOGS_HOME/spark/streaming
 mkdir -p $LOGS_HOME/spark/ml
 mkdir -p $LOGS_HOME/spark/sql
 mkdir -p $LOGS_HOME/spark/core
-mkdir -p $LOGS_HOME/finagle
-mkdir -p $LOGS_HOME/flask
-mkdir -p $LOGS_HOME/watcher 
+mkdir -p $LOGS_HOME/spark/redis
+mkdir -p $LOGS_HOME/jupyterhub
+mkdir -p $LOGS_HOME/flink/streaming
+mkdir -p $LOGS_HOME/kafka/streams
+mkdir -p $LOGS_HOME/serving/discovery
+mkdir -p $LOGS_HOME/serving/prediction
+mkdir -p $LOGS_HOME/serving/finagle
+mkdir -p $LOGS_HOME/serving/flask
+mkdir -p $LOGS_HOME/serving/watcher
+mkdir -p $LOGS_HOME/serving/hystrix
+mkdir -p $LOGS_HOME/serving/atlas
+mkdir -p $LOGS_HOME/serving/tensorflow/
 
 # Ganglia
 echo '...Configuring Ganglia...'
@@ -77,7 +93,7 @@ ln -s $CONFIG_HOME/ganglia/gmetad.conf /etc/ganglia
 ln -s $CONFIG_HOME/ganglia/gmond.conf /etc/ganglia
 
 # MySQL (Required by HiveQL Exercises)
-echo '...Configurating MySQL...'
+echo '...Configuring MySQL...'
 service mysql start
 mysqladmin -u root password "password"
 echo '...****Ignore the ERROR 2002s Below****...'
@@ -125,9 +141,9 @@ echo '...Configuring Tachyon...'
 ln -s $CONFIG_HOME/tachyon/tachyon-env.sh $TACHYON_HOME/conf
 
 # Kafka
-echo '...Configuring Kafka...'
-mv $KAFKA_HOME/etc/ $KAFKA_HOME/etc.orig
-ln -s $CONFIG_HOME/kafka/etc $KAFKA_HOME/etc
+echo '...Configuring Confluent Kafka...'
+mv $CONFLUENT_HOME/etc/ $CONFLUENT_HOME/etc.orig
+ln -s $CONFIG_HOME/kafka/etc $CONFLUENT_HOME/etc
 
 # ZooKeeper
 echo '...Configuring ZooKeeper...'
@@ -139,7 +155,7 @@ mv $ELASTICSEARCH_HOME/config/logging.yml $ELASTICSEARCH_HOME/config/logging.yml
 mv $ELASTICSEARCH_HOME/config/scripts $ELASTICSEARCH_HOME/config/scripts.orig
 ln -s $CONFIG_HOME/elasticsearch/elasticsearch.yml $ELASTICSEARCH_HOME/config
 ln -s $CONFIG_HOME/elasticsearch/logging.yml $ELASTICSEARCH_HOME/config
-ln -s $CONFIG_HOME/elasticsearch/scripts $ELASTICSEARCH_HOME/config
+ln -sf $CONFIG_HOME/elasticsearch/scripts $ELASTICSEARCH_HOME/config
 
 # Logstash
 echo '...Configuring Logstash...'
@@ -158,6 +174,8 @@ ln -s $MYSQL_CONNECTOR_JAR $HIVE_HOME/lib
 
 # Redis
 echo '...Configuring Redis...'
+mv $REDIS_HOME/redis.conf $REDIS_HOME/redis.conf.orig
+ln -s $CONFIG_HOME/redis/redis.conf $REDIS_HOME
 
 # Webdis
 echo '...Configuring Webdis...'
@@ -176,7 +194,12 @@ ln -s $MYSQL_CONNECTOR_JAR $ZEPPELIN_HOME/lib
 
 # iPython/Jupyter
 echo '...Configuring iPython/Jupyter...'
+mkdir -p $WORK_HOME/jupyter
 mkdir -p ~/.jupyter
+
+# JupyterHub
+echo '...Configuring JupyterHub...'
+mkdir -p $WORK_HOME/jupyterhub
 
 # Nifi
 echo '...Configuring NiFi...'
@@ -189,6 +212,7 @@ ln -s $CONFIG_HOME/nifi/logback.xml $NIFI_HOME/conf
 ln -s $CONFIG_HOME/nifi/bootstrap.conf $NIFI_HOME/conf
 ln -s $CONFIG_HOME/nifi/state-management.xml $NIFI_HOME/conf
 mkdir -p $LOGS_HOME/nifi
+mkdir -o $WORK_HOME/nifi
 
 # Airflow
 echo '...Configuring Airflow...'
@@ -231,6 +255,20 @@ echo ...Configuring TensorFlow...
 mkdir -p $LOGS_HOME/tensorflow/serving/
 cd /root/pipeline/datasets/tensorflow/serving/inception_model
 tar -xvzf 00157585.tgz
+cd $PIPELINE_HOME
+
+# Dynomite 
+echo ...Configuring Dynomite... 
+mkdir -p $LOGS_HOME/dynomite
+mv $DYNOMITE_HOME/conf/dynomite.yml $DYNOMITE_HOME/conf/dynomite.yml.orig
+ln -s $CONFIG_HOME/dynomite/dynomite.yml $DYNOMITE_HOME/conf/
+cd $PIPELINE_HOME
+
+# Atlas 
+echo ...Configuring Atlas... 
+mkdir -p $LOGS_HOME/atlas
+mkdir -p $ATLAS_HOME/conf
+ln -s $CONFIG_HOME/atlas/atlas.conf $ATLAS_HOME/conf/
 cd $PIPELINE_HOME
 
 # SSH (Part 2/2)

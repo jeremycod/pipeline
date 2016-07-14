@@ -1,0 +1,18 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: config-service
+netflix:
+  appinfo:
+    name: ${spring.application.name}
+# TODO:  Point this to a valid github location
+#        For now, we're using the "native" profile which doesn't use this config property 
+#        See application.yml for more details
+#spring:
+#  cloud:
+#    config:
+#      server:
+#        git:
+#          uri: https://github.com/fluxcapacitor/pipeline-serving-config.git
+

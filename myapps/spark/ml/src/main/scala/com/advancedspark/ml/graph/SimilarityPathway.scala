@@ -26,7 +26,8 @@ object SimilarityPathway {
     val itemsDF = sqlContext.read.format("com.databricks.spark.csv")
       .option("header", "true")
       .option("inferSchema", "true")
-      .load("file:/root/pipeline/datasets/movielens/ml-latest/movies-sm.csv").toDF("id", "title", "tags")
+      .load("file:/root/pipeline/datasets/movielens/ml-latest/movies-sm.csv")
+      .toDF("id", "title", "tags")
 
     // Convert from RDD[Row] to RDD[Item]
     val itemsRDD = itemsDF.select($"id", $"title", $"tags").map(row => {
@@ -35,8 +36,6 @@ object SimilarityPathway {
       val tags = row.getString(2).trim.split("\\|")
       TaggedItem(id, title, tags)
     })
-
-    itemsRDD.collect()
 
     val allItemPairsRDD = itemsRDD.cartesian(itemsRDD)
 
@@ -55,17 +54,17 @@ object SimilarityPathway {
     similarItemsAboveThresholdRDD.collect().mkString(",")
 
     val similarItemsAboveThresholdEdgeRDD = similarItemsAboveThresholdRDD.map(rdd => {
-      Edge(rdd._1.toLong, rdd._2.toLong, rdd._3.toDouble) 
+      Edge(rdd._1.toLong, rdd._2.toLong, rdd._3.toDouble)
     })
 
     val graph = Graph.fromEdges(similarItemsAboveThresholdEdgeRDD, 0L)
 
-    val src = 1 
+    val src = 1
     val dest = 9
 
-    val lightestPathGraph = Dijkstra.lightestPath(graph, src)
+    val heaviestPathGraph = Dijkstra.heaviestPath(graph, src)
 
-    val lightestPath = lightestPathGraph.vertices.filter(_._1 == dest).map(_._2).collect()(0)._2
-    println("Lightest Path: " + lightestPath)
+    val heaviestPath = heaviestPathGraph.vertices.filter(_._1 == dest).map(_._2).collect()(0)._2
+    println("Heaviest Path: " + heaviestPath)
   }
 }

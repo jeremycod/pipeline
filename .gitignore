@@ -1,4 +1,11 @@
+.cache-main
 .Dockerfile.swp
+.vertx/
+datasets/movielens/ml-latest/movies-hive-friendly.csv
+datasets/movielens/ml-latest/ratings-hive-friendly.csv
+datasets/notmnist/notMNIST_large.tar.gz
+datasets/notmnist/notMNIST_small/
+datasets/notmnist/notMNIST_large/
 image-pca-vectors.parquet/
 datasets/tensorflow/serving/inception_model/00157585/
 stanford-corenlp-full-2015-12-09
